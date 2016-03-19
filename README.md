@@ -2,12 +2,13 @@
 
 There are three components of Piazza Data Analysis
 - Scraper:
-	(Unimplemented)
-	Fetches all data from Piazza class and stores to MongoDB
+	(Mostly Implemented)
+	Fetches all data from Piazza class and stores to SQLite (Easily changeable)
+
 
 Analysis:
 	(Unimplemented)
-	Processes data from MongoDB through textual analysis
+	Processes data from SQLite through textual analysis
 
 Visualization:
 	(Unimplemented)

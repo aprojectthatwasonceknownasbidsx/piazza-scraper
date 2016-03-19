@@ -8,7 +8,15 @@ import html
 
 
 class Scraper:
+    """
+    Usage for Scraper:
 
+    >>> s = Scraper() # Initializes scraper/db connection
+    >>> s.get(10) #Fetches 10 posts and stores them
+    >>> s.print_topics() # Prints list of current topics/tags
+    >>> s.print_posts() # Prints all posts in DB
+    """
+    
     def __init__(self):
         self.piazza = Piazza()
         self.piazza.user_login(email=Config.username, password=Config.password)
@@ -18,11 +26,31 @@ class Scraper:
         self.session = self.Session()
 
     def get(self, limit=10):
+        """
+        Starts the scraper, and stores a certain number of 
+        posts to the database: this is the primary method
+        to be used in scraping
+
+        <Possible Error> Currently, if you run the scraper twice
+        it will duplicate -- must look into methods to fix that
+        (probably using ID)
+
+        Parameters:
+            limit - Number of posts to fetch
+
+        Returns:
+            None
+        """
         for post in self.course.iter_all_posts(limit=limit):
             self.process_one(post)
             print("Entered")
 
     def process_one(self, post):
+        """
+        Takes a post from the Piazza API,
+        converts it into a format ready for the database,
+        and stores it
+        """
         time = parse_time(post['created'])
         title = html.unescape(post['history'][0]['subject'])
         body = html.unescape(post['history'][0]['content'])
@@ -63,6 +91,9 @@ class Scraper:
                 print("\t", comment)
 
     def print_topics(self):
+        """
+            Prints a list of topics currently registerd
+        """
         topics = self.session.query(Topic).all()
         for topic in topics:
             print(topic)
