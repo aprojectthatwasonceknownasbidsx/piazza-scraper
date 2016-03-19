@@ -25,7 +25,7 @@ In the interpreter:
 #### Development
 The project structure is as following
 
-models.py - Models for SQLAlchemy ORM
-config.py - User/Password/Class ID info for Piazza
-utils.py  - Helpful utilities for parsing Piazza blocks
-scraper.py - The main scraper/store to database
+- models.py - Models for SQLAlchemy ORM
+- config.py - User/Password/Class ID info for Piazza
+- utils.py  - Helpful utilities for parsing Piazza blocks
+- scraper.py - The main scraper/store to database
