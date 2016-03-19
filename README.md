@@ -10,7 +10,7 @@ Create a conda environment using
 
 Install `piazza-api` from source, using `pip`.
 
-	pip install git+https://github.com/hfaran/piazza-api.git
+	pip install git+https://github.com/bidsX/piazza-api3.git
 
 Install from the list of requirements.
 
