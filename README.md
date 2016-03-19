@@ -6,21 +6,21 @@ Scrapes [piazza.com](http://piazza.com).
 
 Create a conda environment using
 
-  conda create --name ENV_NAME python=3.4
+	conda create --name ENV_NAME python=3.4
 
 Install `piazza-api` from source, using `pip`.
 
-  pip install git+https://github.com/hfaran/piazza-api.git
+	pip install git+https://github.com/hfaran/piazza-api.git
 
 Install from the list of requirements.
 
-  pip install -r requirements.txt
+	pip install -r requirements.txt
 
 # How to Run
 
 To run the scraper, do the following. We assume that you have already started your conda environment using
 
-  source activate ENV_NAME
+	source activate ENV_NAME
 
 1) If the database hasn't already been created (e.g. this is the first time you are running the scraper), run
 
