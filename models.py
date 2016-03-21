@@ -28,13 +28,14 @@ class Post(Base):
         self.time = time
 
     def __repr__(self):
-        return "Post<title=%s,time=%s" % (self.subject, str(self.time))
+        return "Post<title=%s,time=%s>" % (self.subject, str(self.time))
 
 
 class Topic(Base):
     __tablename__ = "topics"
     index = Column(Integer, primary_key=True)
     name = Column(String)
+    posts = relationship("Post", secondary=association_table)
 
     def __init__(self, name):
         self.name = name
@@ -62,5 +63,6 @@ class Comment(Base):
         return "Comment(%s)" % self.text
 
 if __name__ == "__main__":
-    engine = create_engine('sqlite:///test.db', echo=True)
+    engine = create_engine('sqlite:///test.db', echo=False)
     Base.metadata.create_all(engine)
+    print("Created Database")

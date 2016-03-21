@@ -1,9 +1,21 @@
 from datetime import datetime
+import re
+import html
+
+
+def remove_tags(text):
+    """
+    Converts HTML to Python Unicode String
+    """
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, "", text)
+    return html.unescape(cleantext)
+
 
 def parse_time(s='2016-03-16T17:31:14Z'):
 
     """
-    Converts Piazza Date-time format into a 
+    Converts Piazza Date-time format into a
     pythonic construct.
 
     Examples of Piazza Datetime:
@@ -13,6 +25,10 @@ def parse_time(s='2016-03-16T17:31:14Z'):
     format = "%Y-%m-%dT%H:%M:%SZ"
     return datetime.strptime(s,format)
 
+
 def process_all_children(post):
-    return post['children'] + sum([process_all_children(child) 
+    """
+        Flattens comments in a Piazza thread
+    """
+    return post['children'] + sum([process_all_children(child)
                 for child in post['children']], [])

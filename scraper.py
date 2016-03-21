@@ -4,7 +4,6 @@ from sqlalchemy.orm import sessionmaker
 from models import Post, Comment, Topic
 from piazza_api import Piazza
 from utils import *
-import html
 
 
 class Scraper:
@@ -41,9 +40,9 @@ class Scraper:
         Returns:
             None
         """
-        for post in self.course.iter_all_posts(limit=limit):
+        for _,post in enumerate(self.course.iter_all_posts(limit=limit)):
             self.process_one(post)
-            print("Entered")
+            print(_,post['history'][0]['subject'])
 
     def process_one(self, post):
         """
@@ -52,15 +51,15 @@ class Scraper:
         and stores it
         """
         time = parse_time(post['created'])
-        title = html.unescape(post['history'][0]['subject'])
-        body = html.unescape(post['history'][0]['content'])
+        title = remove_tags(post['history'][0]['subject'])
+        body = remove_tags(post['history'][0]['content'])
         sqlpost = Post(title, body, time)
         for comment in process_all_children(post):
             time = parse_time(comment['created'])
             if 'history' not in comment:
-                subject = html.unescape(comment['subject'])
+                subject = remove_tags(comment['subject'])
             else:
-                subject = html.unescape(comment['history'][0]['content'])
+                subject = remove_tags(comment['history'][0]['content'])
             sqlpost.children.append(Comment(subject, time))
         for topic in post['tags']:
             sqlpost.topics.append(self.get_topic(topic))
