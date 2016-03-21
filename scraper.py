@@ -1,7 +1,7 @@
 from config import Config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Post, Comment, Topic
+from models import Post, Comment, Tag
 from piazza_api import Piazza
 from utils import *
 
@@ -50,33 +50,44 @@ class Scraper:
         converts it into a format ready for the database,
         and stores it
         """
+
         time = parse_time(post['created'])
         title = remove_tags(post['history'][0]['subject'])
         body = remove_tags(post['history'][0]['content'])
-        sqlpost = Post(title, body, time)
+        views = post['unique_views']
+        favorites = post['num_favorites']
+        sqlpost = Post(title, body, time, views, favorites)
+
+        # Adding Comments
         for comment in process_all_children(post):
             time = parse_time(comment['created'])
+            type = comment['type']
             if 'history' not in comment:
                 subject = remove_tags(comment['subject'])
             else:
                 subject = remove_tags(comment['history'][0]['content'])
-            sqlpost.children.append(Comment(subject, time))
-        for topic in post['tags']:
-            sqlpost.topics.append(self.get_topic(topic))
+            sqlpost.comments.append(Comment(subject, time, type))
+
+        #Adding Tags
+        for tag in post['tags']:
+            sqlpost.tags.append(self.get_tag(tag))
+
+        #Saving to Database
         self.session.add(sqlpost)
         self.session.commit()
 
-    def get_topic(self, name):
+
+    def get_tag(self, name):
         """
         Returns the topic if it exists, and otherwise creates it
         """
 
-        topic = self.session.query(Topic).filter(Topic.name == name).first()
-        if not topic:
-            topic = Topic(name)
-            self.session.add(topic)
+        tag = self.session.query(Tag).filter(Tag.name == name).first()
+        if not tag:
+            tag = Tag(name)
+            self.session.add(tag)
             self.session.commit()
-        return topic
+        return tag
 
     def print_posts(self):
         """
@@ -89,11 +100,11 @@ class Scraper:
             for comment in post.children:
                 print("\t", comment)
 
-    def print_topics(self):
+    def print_tags(self):
         """
             Prints a list of topics currently registerd
         """
-        topics = self.session.query(Topic).all()
+        topics = self.session.query(Tag).all()
         for topic in topics:
             print(topic)
            
