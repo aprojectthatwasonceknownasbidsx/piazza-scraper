@@ -28,12 +28,11 @@ To run the scraper, do the following. We assume that you have already started yo
 
 2) To run the scraper, run
 
-	python -i scraper.py
+	python scraper.py
 
-In the interpreter:
-
-	s = Scraper()
-	s.get(100) #Saves 100 posts to database
+3) Whenever you want to refetch pages, run the scraper again, or use the following argument -r to pick some time to get info from
+	
+	python scraper.py -r 2 (2 days of overlap)
 
 # Development
 

@@ -25,6 +25,12 @@ def parse_time(s='2016-03-16T17:31:14Z'):
     format = "%Y-%m-%dT%H:%M:%SZ"
     return datetime.strptime(s,format)
 
+def parse_day(s='01/18'):
+    if len(s) < 6:
+        s += "/16"
+    print(s)
+    format = "%m/%d/%y"
+    return datetime.strptime(s,format)
 
 def process_all_children(post):
     """

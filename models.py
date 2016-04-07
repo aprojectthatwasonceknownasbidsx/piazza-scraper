@@ -36,6 +36,21 @@ class Post(Base):
         return "Post<title=%s,time=%s>" % (self.title, str(self.time))
 
 
+class DayStats(Base):
+    __tablename__ = "daily"
+    index = Column(Integer, primary_key = True)
+    questions = Column(Integer)
+    day = Column(DateTime)
+    users = Column(Integer)
+    posts = Column(Integer)
+
+    def __init__(self,questions,day,users,posts):
+        self.questions = questions
+        self.day = day
+        self.users = users
+        self.posts = posts
+
+
 class Tag(Base):
     __tablename__ = "tags"
     index = Column(Integer, primary_key=True)
